@@ -8,16 +8,21 @@ import androidx.room.Query
 @Dao
 interface AsteroidDao {
 
-    // method for a add data
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addAsteroid(asteroid : AsteroidEntity)
 
-    // query fro get data
-    @Query("SELECT * FROM asteroid_table")
+    /**
+     * Selects and returns all rows in the table,
+     *
+     */    @Query("SELECT * FROM asteroid_table")
     fun getAsteroid () : LiveData<List<AsteroidEntity>>
 
-    @Query("SELECT * FROM asteroid_table LIMIT 1")
-    suspend fun getDiameterMax(): AsteroidEntity?
+    /**
+     * Selects and returns the Asteroid with given nightId.
+     */
+    @Query("SELECT * from asteroid_table WHERE id = :key")
+    fun getAsteroidWithId(key: Long): LiveData<AsteroidEntity>
+
 
 
  }

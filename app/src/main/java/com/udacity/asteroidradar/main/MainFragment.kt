@@ -32,12 +32,15 @@ class MainFragment : Fragment() {
         val application = requireNotNull(this.activity).application
         val databaseSource = AsteroidDatabase.getInstance(application).getAsteroidDao()
         val viewModelFactory = AsteroidViewModelFactory(databaseSource, application)
-        val viewModel = ViewModelProviders.of(this, viewModelFactory).get(AsteroidViewModel::class.java)
+        val viewModel =
+            ViewModelProviders.of(this, viewModelFactory).get(AsteroidViewModel::class.java)
         binding.viewModel = viewModel
         // get data from view model
+
         viewModel.dataList.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(activity, it?.get(0)?.absolute_magnitude.toString(), Toast.LENGTH_LONG).show()
+            Toast.makeText(activity, it.size.toString(), Toast.LENGTH_LONG).show()
         })
+
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
