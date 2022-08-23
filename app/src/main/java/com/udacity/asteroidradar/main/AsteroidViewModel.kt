@@ -1,12 +1,17 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
+import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.udacity.asteroidradar.api.ServerApi
 import com.udacity.asteroidradar.database.AsteroidDao
 import com.udacity.asteroidradar.database.AsteroidEntity
+import com.udacity.asteroidradar.models.AsteroidListModel
 import kotlinx.coroutines.*
+import retrofit2.Call
+import retrofit2.Response
 
 class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
     AndroidViewModel(application) {
@@ -29,6 +34,15 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
         viewModelJob.cancel()
     }
 
+    private val _navigateToSleepQuality = MutableLiveData<AsteroidEntity>()
+
+    val navigateToSleepQuality: LiveData<AsteroidEntity>
+        get() = _navigateToSleepQuality
+
+    fun doneNavigating() {
+        _navigateToSleepQuality.value = null
+    }
+
     // define a scope for coroutines to run in it
     // Dispatchers.Main (work all over the project and used for update live data)
     private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
@@ -38,7 +52,7 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
 
 
     // initial value
-  //  private var oneAsteroid = dao.getAsteroidWithId()
+    private var oneAsteroid = dao.getAsteroidWithId(0L)
 
 
     // list that will passed to ui controller
@@ -46,16 +60,43 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
         get() = Asteroids
 
     // list that will passed to ui controller
-//    val asteroid: LiveData<AsteroidEntity>
-//        get() = oneAsteroid
+    val asteroid: LiveData<AsteroidEntity>
+        get() = oneAsteroid
+
+    // The internal MutableLiveData String that stores the status of the most recent request
+    private val _response = MutableLiveData<String>()
+
+    // The external immutable LiveData for the request status String
+    val response: LiveData<String>
+        get() = _response
 
     init {
+        getMarsRealEstateProperties()
+//
+//        uiScope.launch {
+//            Asteroids = getAsteroidFromDatabase()
+//            oneAsteroid = getOneAsteroidFromDatabase(0L)
+//
+//        }
+    }
 
-        uiScope.launch {
-            Asteroids = getAsteroidFromDatabase()
-          //  oneAsteroid = getOneAsteroidFromDatabase(key)
+    private fun getMarsRealEstateProperties() {
+        ServerApi.retrofitService.getProperties()
+            .enqueue(object : retrofit2.Callback<List<AsteroidListModel>> {
+                override fun onResponse(
+                    call: Call<List<AsteroidListModel>>,
+                    response: Response<List<AsteroidListModel>>
+                ) {
+                    _response.value = response.body()?.toString()
+                    Log.i("test",response.body()?.get(0).toString())
+                }
 
-        }
+                override fun onFailure(call: Call<List<AsteroidListModel>>, t: Throwable) {
+                    _response.value = "Failure: " + t.message
+
+                }
+            })
+
     }
 
     // will called from ui
@@ -66,12 +107,13 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
         }
     }
 
-  // will called from ui
+    // will called from ui
     fun getOneAsteroid(id: Long) {
         uiScope.launch {
-           // oneAsteroid = getOneAsteroidFromDatabase(id)
+            oneAsteroid = getOneAsteroidFromDatabase(id)
         }
     }
+
     private suspend fun getOneAsteroidFromDatabase(id: Long): LiveData<AsteroidEntity> {
         // to switch from main thread to IO thread use withContext
         // Dispatchers.IO used for get data from room database
@@ -83,12 +125,12 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
     }
 
 
-
     // will called from ui
     fun onAddNewAsteroid() {
         uiScope.launch {
             val asteroid = AsteroidEntity()
             insert(asteroid)
+            _navigateToSleepQuality.value = asteroid
             Asteroids = getAsteroidFromDatabase()
         }
     }
@@ -109,4 +151,5 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
             dao.addAsteroid(asteroid)
         }
     }
+
 }
