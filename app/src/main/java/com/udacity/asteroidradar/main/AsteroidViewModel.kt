@@ -2,16 +2,21 @@ package com.udacity.asteroidradar.main
 
 import android.app.Application
 import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
+import com.udacity.asteroidradar.api.API_KEY
 import com.udacity.asteroidradar.api.ServerApi
 import com.udacity.asteroidradar.database.AsteroidDao
 import com.udacity.asteroidradar.database.AsteroidEntity
-import com.udacity.asteroidradar.models.AsteroidListModel
+import com.udacity.asteroidradar.models.ModelResponse
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.*
 
 class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
     AndroidViewModel(application) {
@@ -70,34 +75,46 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
     val response: LiveData<String>
         get() = _response
 
+    val sdf = SimpleDateFormat("yyyy-MM-dd")
+    val startDate = sdf.format(Date())
+
     init {
-        getMarsRealEstateProperties()
-//
-//        uiScope.launch {
-//            Asteroids = getAsteroidFromDatabase()
-//            oneAsteroid = getOneAsteroidFromDatabase(0L)
-//
-//        }
+        getData()
+        uiScope.launch {
+            Asteroids = getAsteroidFromDatabase()
+            oneAsteroid = getOneAsteroidFromDatabase(0L)
+
+        }
     }
 
-    private fun getMarsRealEstateProperties() {
-        ServerApi.retrofitService.getProperties()
-            .enqueue(object : retrofit2.Callback<List<AsteroidListModel>> {
-                override fun onResponse(
-                    call: Call<List<AsteroidListModel>>,
-                    response: Response<List<AsteroidListModel>>
-                ) {
-                    _response.value = response.body()?.toString()
-                    Log.i("test",response.body()?.get(0).toString())
-                }
-
-                override fun onFailure(call: Call<List<AsteroidListModel>>, t: Throwable) {
-                    _response.value = "Failure: " + t.message
-
-                }
-            })
-
+    private  fun getData(){
+        viewModelScope.launch {
+            try {
+                var listResult = ServerApi.retrofitService.getList( "","",API_KEY)
+                _response.value = "Success: ${listResult.await().size.toString()} Mars properties retrieved"
+            } catch (e: Exception) {
+                _response.value = "Failure: ${e.message}"
+            }
+        }
     }
+
+//     private fun getListOfAsteroid(start_date:String, end_date:String,api_key:String) {
+//        ServerApi.retrofitService.getList(start_date,end_date,api_key)
+//            .enqueue(object : retrofit2.Callback<List<ModelResponse>> {
+//                override fun onResponse(
+//                    call: Call<List<ModelResponse>>,
+//                    response: Response<List<ModelResponse>>
+//                ) {
+//                    _response.value = response.body()?.toString()
+//                 }
+//
+//                override fun onFailure(call: Call<List<ModelResponse>>, t: Throwable) {
+//                    _response.value = "Failure: " + t.message
+//
+//                }
+//            })
+//
+//    }
 
     // will called from ui
     fun getAllAsteroid() {
