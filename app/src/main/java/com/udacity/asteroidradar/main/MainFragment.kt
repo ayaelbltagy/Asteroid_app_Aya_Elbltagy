@@ -53,12 +53,14 @@ class MainFragment : Fragment() {
             }
         })
 
+        viewModel.property.observe(viewLifecycleOwner, Observer {
+             Toast.makeText(activity,it.size.toString(),Toast.LENGTH_LONG).show()
+        })
 
-        binding.activityMainImageOfTheDay.setOnClickListener {
-            viewModel.response.observe(viewLifecycleOwner, Observer {
-                Toast.makeText(activity,it,Toast.LENGTH_LONG).show()
-            })
-        }
+        viewModel.status.observe(viewLifecycleOwner, Observer {
+            Toast.makeText(activity,it,Toast.LENGTH_LONG).show()
+        })
+
 
         binding.lifecycleOwner = viewLifecycleOwner
         return binding.root

@@ -43,6 +43,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/BindingAdapters.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/api/APIiService.kt">
           <value>
             <set />
@@ -158,6 +163,21 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/models/ResponseModel.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/models/moResponse.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/models/moResponse.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/layout/fragment_main.xml">
           <value>
             <set />
@@ -193,6 +213,16 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../storeApp/app/src/androidTest/java/com/store/businessboomers/store_app_interface/testPopupNavigation/UtilityTest.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../storeApp/app/src/main/java/com/store/businessboomers/store_app_interface/Splash_View.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../storeApp/app/src/main/java/com/store/businessboomers/store_app_interface/comman/components/genericPackage/PDFGeneric.java">
           <value>
             <set />
@@ -218,6 +248,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../storeApp/app/src/main/java/com/store/businessboomers/store_app_interface/comman/services/models/StoreIdentityResponse.java">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../storeApp/app/src/main/java/com/store/businessboomers/store_app_interface/comman/services/webApi/ApiInterface.java">
           <value>
             <set />
@@ -229,6 +264,21 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../storeApp/app/src/main/java/com/store/businessboomers/store_app_interface/default_layout/views/ui/checkout/FrPrintInvoice.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../storeApp/app/src/main/java/com/store/businessboomers/store_app_interface/default_layout/views/ui/filter/FrProductDetailsView.java">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../storeApp/app/src/main/res/layouts/default/layout/fragment_product_details_fr_view.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../storeApp/app/src/test/java/com/store/businessboomers/store_app_interface/ExampleUnitTest.java">
           <value>
             <set />
           </value>

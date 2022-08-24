@@ -7,14 +7,19 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.API_KEY
 import com.udacity.asteroidradar.api.ServerApi
 import com.udacity.asteroidradar.database.AsteroidDao
 import com.udacity.asteroidradar.database.AsteroidEntity
 import com.udacity.asteroidradar.models.ModelResponse
+import com.udacity.asteroidradar.models.ResponseModel
+import com.udacity.asteroidradar.models.moResponse
 import kotlinx.coroutines.*
 import retrofit2.Call
 import retrofit2.Response
+import retrofit2.await
+import java.lang.Exception
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -69,17 +74,26 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
         get() = oneAsteroid
 
     // The internal MutableLiveData String that stores the status of the most recent request
-    private val _response = MutableLiveData<String>()
+    private val _status = MutableLiveData<String>()
 
     // The external immutable LiveData for the request status String
-    val response: LiveData<String>
-        get() = _response
+    val status: LiveData<String>
+        get() = _status
+    private val _property = MutableLiveData<List<moResponse>>()
+    val property: LiveData<List<moResponse>>
+        get() = _property
+
+    private val _image = MutableLiveData<PictureOfDay>()
+    val image: LiveData<PictureOfDay>
+        get() = _image
 
     val sdf = SimpleDateFormat("yyyy-MM-dd")
     val startDate = sdf.format(Date())
 
     init {
+      //  getListOfAsteroid("","",API_KEY)
         getData()
+        getImage()
         uiScope.launch {
             Asteroids = getAsteroidFromDatabase()
             oneAsteroid = getOneAsteroidFromDatabase(0L)
@@ -89,26 +103,41 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
 
     private  fun getData(){
         viewModelScope.launch {
-            try {
+
                 var listResult = ServerApi.retrofitService.getList( "","",API_KEY)
-                _response.value = "Success: ${listResult.await().size.toString()} Mars properties retrieved"
+            try {
+                var list = listResult
+                if(list.size>0){
+                    _property.value = list
+                }
+            }catch (e :Exception){
+                _status.value = "Failed :${e.message}"
+            }
+
+        }
+    }
+    private fun getImage(){
+        viewModelScope.launch {
+            try {
+                _image.value = ServerApi.retrofitService.getPictureOfDay(API_KEY)
             } catch (e: Exception) {
-                _response.value = "Failure: ${e.message}"
+                Log.i("test","Failed :${e.message}")
             }
         }
+
     }
 
 //     private fun getListOfAsteroid(start_date:String, end_date:String,api_key:String) {
 //        ServerApi.retrofitService.getList(start_date,end_date,api_key)
-//            .enqueue(object : retrofit2.Callback<List<ModelResponse>> {
+//            .enqueue(object : retrofit2.Callback<List<ResponseModel>> {
 //                override fun onResponse(
-//                    call: Call<List<ModelResponse>>,
-//                    response: Response<List<ModelResponse>>
+//                    call: Call<List<ResponseModel>>,
+//                    response: Response<List<ResponseModel>>
 //                ) {
 //                    _response.value = response.body()?.toString()
 //                 }
 //
-//                override fun onFailure(call: Call<List<ModelResponse>>, t: Throwable) {
+//                override fun onFailure(call: Call<List<ResponseModel>>, t: Throwable) {
 //                    _response.value = "Failure: " + t.message
 //
 //                }

@@ -4,9 +4,10 @@ import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterF
 import com.squareup.moshi.Moshi
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 import com.udacity.asteroidradar.Asteroid
-import com.udacity.asteroidradar.models.ModelResponse
+import com.udacity.asteroidradar.PictureOfDay
+import com.udacity.asteroidradar.models.ResponseModel
+import com.udacity.asteroidradar.models.moResponse
 import kotlinx.coroutines.Deferred
-import org.json.JSONObject
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
@@ -16,7 +17,7 @@ import retrofit2.http.Query
 
 
 const val API_KEY = "wat0gv7aur4kc7FwltauMiuEFl8K9hlOHdQ0JXKL"
-private const val BASE_URL ="https://api.nasa.gov/neo/rest/v1/"
+private const val BASE_URL ="https://api.nasa.gov/"
 // moshi is a lib used to convert json
 private val moshi = Moshi.Builder()
     .add(KotlinJsonAdapterFactory())
@@ -30,13 +31,16 @@ private val retrofit = Retrofit.Builder()
     .build()
 
 interface AsteroidApiService {
-    @GET("feed?")
-    fun getList(
+    @GET("neo/rest/v1/feed?")
+    suspend fun getList(
         @Query("start_date") START_DATE: String,
         @Query("end_date") END_DATE: String,
-        @Query("api_key") API_KEY: String
-    ): Deferred<List<ModelResponse>>
+        @Query("api_key") API_KEY: String): List<moResponse>
 
+    @GET("planetary/apod")
+    suspend fun getPictureOfDay(@Query("api_key") API_KEY: String) : PictureOfDay
+
+   
 }
 
 object ServerApi {
