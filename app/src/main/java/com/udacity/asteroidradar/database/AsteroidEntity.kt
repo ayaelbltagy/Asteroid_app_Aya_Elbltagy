@@ -7,9 +7,11 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "asteroid_table")
 data class AsteroidEntity (
     @PrimaryKey(autoGenerate = true)
-    var id :Long = 0L,
-    @ColumnInfo(name = "absolute_magnitude")
-    var absolute_magnitude : Double =0.0,
-    @ColumnInfo(name = "estimated_diameter_max")
-    var estimated_diameter_max : Double =0.0
-)
+    val id: Long,
+    val codename: String,
+    val closeApproachDate: String,
+    val absoluteMagnitude: Double,
+    val estimatedDiameter: Double,
+    val relativeVelocity: Double,
+    val distanceFromEarth: Double,
+    val isPotentiallyHazardous: Boolean)

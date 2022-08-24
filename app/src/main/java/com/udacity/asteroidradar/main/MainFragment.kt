@@ -7,9 +7,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.udacity.asteroidradar.R
+import com.udacity.asteroidradar.api.AteroidObjectClass
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.factory.AsteroidViewModelFactory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.withContext
 
 class MainFragment : Fragment() {
 
@@ -39,26 +43,23 @@ class MainFragment : Fragment() {
             // this.findNavController().navigate(MainFragmentDirections.actionShowDetail())
             binding.activityMainImageOfTheDay.setOnClickListener {
                 viewModel.asteroid.observe(viewLifecycleOwner, Observer {
-                    Toast.makeText(context, it.absolute_magnitude.toString(), Toast.LENGTH_LONG)
-                        .show()
+
 
                 })
             }
 
         })
         binding.asteroidRecycler.adapter = adapter
-        viewModel.dataList.observe(viewLifecycleOwner, Observer {
+//        viewModel.dataList.observe(viewLifecycleOwner, Observer {
+//            it?.let {
+//                adapter.submitList(it)
+//            }
+//        })
+
+        viewModel.property.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
             }
-        })
-
-        viewModel.property.observe(viewLifecycleOwner, Observer {
-             Toast.makeText(activity,it.size.toString(),Toast.LENGTH_LONG).show()
-        })
-
-        viewModel.status.observe(viewLifecycleOwner, Observer {
-            Toast.makeText(activity,it,Toast.LENGTH_LONG).show()
         })
 
 

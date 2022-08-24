@@ -50,15 +50,15 @@ fun bindImagePictureOfDay(imageView: ImageView, data: PictureOfDay?) {
 
         if (it.mediaType == "image") {
 
-            Picasso.with(imageView.context)
-                .load(it.url)
-                .into(imageView)
+//            Picasso.with(imageView.context)
+//                .load(it.url)
+//                .into(imageView)
 
             // Reference: use Glide works as well
-            /*
+
             Glide.with(imageView.context)
                 .load(it.url)
-                .into(imageView)*/
+                .into(imageView)
 
             val strFormat = imageView.resources.getString(
                 R.string.nasa_picture_of_day_content_description_format)
