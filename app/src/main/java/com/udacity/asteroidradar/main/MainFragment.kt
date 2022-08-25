@@ -12,6 +12,7 @@ import com.udacity.asteroidradar.api.AteroidObjectClass
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.factory.AsteroidViewModelFactory
+import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -33,34 +34,38 @@ class MainFragment : Fragment() {
         val application = requireNotNull(this.activity).application
         val databaseSource = AsteroidDatabase.getInstance(application).getAsteroidDao()
         val viewModelFactory = AsteroidViewModelFactory(databaseSource, application)
-        val viewModel =
-            ViewModelProviders.of(this, viewModelFactory).get(AsteroidViewModel::class.java)
+        val viewModel = ViewModelProviders.of(this, viewModelFactory).get(AsteroidViewModel::class.java)
         binding.viewModel = viewModel
-        // create adapter
-        var adapter = AsteroidAdapter(AsteroidClickListener { Id ->
-             viewModel.getOneAsteroid(Id) // get asteroid from room db
-            viewModel.navigateToSelectedProperty.observe(viewLifecycleOwner, Observer {
+//        // create adapter
+//        var adapter = AsteroidAdapter(AsteroidClickListener { Id ->
+//             viewModel.getOneAsteroid(Id) // get asteroid from room db
+//        })
+//        binding.asteroidRecycler.adapter = adapter
+//        // add list to adapter
+//        viewModel.localList.observe(viewLifecycleOwner, Observer {
+//            it?.let {
+//                adapter.submitList(it)
+//            }
+//        })
 
-                if(it != null){
-                    // navigate to details
-                    this.findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
-                    viewModel.displayPropertyDetailsComplete()
-                }
-                else{
-                    Toast.makeText(activity,"null",Toast.LENGTH_LONG).show()
-                }
-            })
+        var adapter = MainAsteroidAdapter(MainAsteroidClickListener {
+            viewModel.displayPropertyDetails(it)
         })
         binding.asteroidRecycler.adapter = adapter
-        // add list to adapter
-        viewModel.property.observe(viewLifecycleOwner, Observer {
+        viewModel.refreshedList.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
             }
         })
+        viewModel.navigateToSelectedProperty.observe(viewLifecycleOwner, Observer {
 
+            if(it != null){
+                // navigate to details
+                this.findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
+                viewModel.displayPropertyDetailsComplete()
+            }
+        })
 
-        binding.lifecycleOwner = viewLifecycleOwner
         return binding.root
     }
 

@@ -40,9 +40,9 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
     val navigateToSelectedProperty: LiveData<Asteroid>
         get() = _navigateToSelectedProperty
 
-//    fun displayPropertyDetails(marsProperty: Asteroid) {
-//        _navigateToSelectedProperty.value = marsProperty
-//    }
+    fun displayPropertyDetails(asteroid: Asteroid) {
+        _navigateToSelectedProperty.value = asteroid
+    }
     fun displayPropertyDetailsComplete() {
         _navigateToSelectedProperty.value = null
     }
@@ -113,33 +113,26 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
         return pictureOfDay
     }
 
-    private val _property = MutableLiveData<List<AsteroidEntity>>()
-    val property: MutableLiveData<List<AsteroidEntity>>
-        get() = _property
+    private val _localList = MutableLiveData<List<AsteroidEntity>>()
+    val localList: MutableLiveData<List<AsteroidEntity>>
+        get() = _localList
+
+    private val _refreshedList = MutableLiveData<List<Asteroid>>()
+    val refreshedList: MutableLiveData<List<Asteroid>>
+        get() = _refreshedList
+
 
     private fun refreshAsteroidsgetFromAPI() {
         viewModelScope.launch {
             val asteroids = AteroidObjectClass.getAsteroids()
-            _property.value = asteroids.asAsteroidToEntities()
-            //dao.insertAll(asteroids.asAsteroidEntities())
+            _refreshedList .value = asteroids
+            _localList.value = asteroids.asAsteroidToEntities()
+           // dao.addAsteroid(asteroids) // should handle it to add in db
         }
 
     }
 
-    fun List<Asteroid>.asAsteroidToEntities() : List<AsteroidEntity> {
-        return map {
-            AsteroidEntity(
-                id = it.id,
-                codename = it.codename,
-                closeApproachDate = it.closeApproachDate,
-                absoluteMagnitude = it.absoluteMagnitude,
-                estimatedDiameter = it.estimatedDiameter,
-                relativeVelocity = it.relativeVelocity,
-                distanceFromEarth = it.distanceFromEarth,
-                isPotentiallyHazardous = it.isPotentiallyHazardous
-            )
-        }
-    }
+
 
 
 
@@ -206,6 +199,21 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
     fun LiveData<AsteroidEntity>.asEntitiesToAsteroid() : LiveData<Asteroid> {
         return map {
             Asteroid(
+                id = it.id,
+                codename = it.codename,
+                closeApproachDate = it.closeApproachDate,
+                absoluteMagnitude = it.absoluteMagnitude,
+                estimatedDiameter = it.estimatedDiameter,
+                relativeVelocity = it.relativeVelocity,
+                distanceFromEarth = it.distanceFromEarth,
+                isPotentiallyHazardous = it.isPotentiallyHazardous
+            )
+        }
+    }
+
+    fun List<Asteroid>.asAsteroidToEntities() : List<AsteroidEntity> {
+        return map {
+            AsteroidEntity(
                 id = it.id,
                 codename = it.codename,
                 closeApproachDate = it.closeApproachDate,
