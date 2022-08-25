@@ -32,7 +32,6 @@ class AsteroidAdapter(val clickListener: AsteroidClickListener) : ListAdapter<As
 
         fun bind(item: AsteroidEntity, clickListener: AsteroidClickListener) {
             binding.asteroid = item
-            binding.txt.text = ""
             binding.clickListener = clickListener
             binding.executePendingBindings()
         }

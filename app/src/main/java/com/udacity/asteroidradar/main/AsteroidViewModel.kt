@@ -2,10 +2,8 @@ package com.udacity.asteroidradar.main
 
 import android.app.Application
 import android.util.Log
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
+import androidx.lifecycle.Transformations.map
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.AteroidObjectClass
@@ -36,13 +34,26 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
         viewModelJob.cancel()
     }
 
-    private val _navigateToSleepQuality = MutableLiveData<AsteroidEntity>()
+    // navigation from online
+    private var _navigateToSelectedProperty = MutableLiveData<Asteroid>()
 
-    val navigateToSleepQuality: LiveData<AsteroidEntity>
-        get() = _navigateToSleepQuality
+    val navigateToSelectedProperty: LiveData<Asteroid>
+        get() = _navigateToSelectedProperty
+
+//    fun displayPropertyDetails(marsProperty: Asteroid) {
+//        _navigateToSelectedProperty.value = marsProperty
+//    }
+    fun displayPropertyDetailsComplete() {
+        _navigateToSelectedProperty.value = null
+    }
+    // navigation from db
+    private val _navigateToDetails = MutableLiveData<AsteroidEntity>()
+
+    val navigateToDetails: LiveData<AsteroidEntity>
+        get() = _navigateToDetails
 
     fun doneNavigating() {
-        _navigateToSleepQuality.value = null
+        _navigateToDetails.value = null
     }
 
     // define a scope for coroutines to run in it
@@ -109,13 +120,13 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
     private fun refreshAsteroidsgetFromAPI() {
         viewModelScope.launch {
             val asteroids = AteroidObjectClass.getAsteroids()
-            _property.value = asteroids.asAsteroidEntities()
+            _property.value = asteroids.asAsteroidToEntities()
             //dao.insertAll(asteroids.asAsteroidEntities())
         }
 
     }
 
-    fun List<Asteroid>.asAsteroidEntities() : List<AsteroidEntity> {
+    fun List<Asteroid>.asAsteroidToEntities() : List<AsteroidEntity> {
         return map {
             AsteroidEntity(
                 id = it.id,
@@ -130,6 +141,8 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
         }
     }
 
+
+
     // will called from ui
     fun getAllAsteroid() {
         uiScope.launch {
@@ -142,8 +155,15 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
     fun getOneAsteroid(id: Long) {
         uiScope.launch {
             oneAsteroid = getOneAsteroidFromDatabase(id)
+            _navigateToDetails.value = oneAsteroid.value
+
+
+
         }
     }
+
+
+
 
     private suspend fun getOneAsteroidFromDatabase(id: Long): LiveData<AsteroidEntity> {
         // to switch from main thread to IO thread use withContext
@@ -161,7 +181,7 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
         uiScope.launch {
             val asteroid = AsteroidEntity(0L,"","",0.0,0.0,0.0,0.0,false)
             insert(asteroid)
-            _navigateToSleepQuality.value = asteroid
+            _navigateToDetails.value = asteroid
             Asteroids = getAsteroidFromDatabase()
         }
     }
@@ -183,4 +203,18 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
         }
     }
 
+    fun LiveData<AsteroidEntity>.asEntitiesToAsteroid() : LiveData<Asteroid> {
+        return map {
+            Asteroid(
+                id = it.id,
+                codename = it.codename,
+                closeApproachDate = it.closeApproachDate,
+                absoluteMagnitude = it.absoluteMagnitude,
+                estimatedDiameter = it.estimatedDiameter,
+                relativeVelocity = it.relativeVelocity,
+                distanceFromEarth = it.distanceFromEarth,
+                isPotentiallyHazardous = it.isPotentiallyHazardous
+            )
+        }
+    }
 }

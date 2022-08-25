@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.api.AteroidObjectClass
 import com.udacity.asteroidradar.database.AsteroidDatabase
@@ -35,27 +36,23 @@ class MainFragment : Fragment() {
         val viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(AsteroidViewModel::class.java)
         binding.viewModel = viewModel
-        // get data from view model
+        // create adapter
         var adapter = AsteroidAdapter(AsteroidClickListener { Id ->
-            Toast.makeText(context, "${Id}", Toast.LENGTH_LONG).show()
-            viewModel.getOneAsteroid(Id)
-            // navigate to details
-            // this.findNavController().navigate(MainFragmentDirections.actionShowDetail())
-            binding.activityMainImageOfTheDay.setOnClickListener {
-                viewModel.asteroid.observe(viewLifecycleOwner, Observer {
+             viewModel.getOneAsteroid(Id) // get asteroid from room db
+            viewModel.navigateToSelectedProperty.observe(viewLifecycleOwner, Observer {
 
-
-                })
-            }
-
+                if(it != null){
+                    // navigate to details
+                    this.findNavController().navigate(MainFragmentDirections.actionShowDetail(it))
+                    viewModel.displayPropertyDetailsComplete()
+                }
+                else{
+                    Toast.makeText(activity,"null",Toast.LENGTH_LONG).show()
+                }
+            })
         })
         binding.asteroidRecycler.adapter = adapter
-//        viewModel.dataList.observe(viewLifecycleOwner, Observer {
-//            it?.let {
-//                adapter.submitList(it)
-//            }
-//        })
-
+        // add list to adapter
         viewModel.property.observe(viewLifecycleOwner, Observer {
             it?.let {
                 adapter.submitList(it)
