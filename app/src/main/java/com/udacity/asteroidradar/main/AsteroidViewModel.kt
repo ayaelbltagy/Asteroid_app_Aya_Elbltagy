@@ -1,23 +1,20 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
-import android.util.Log
-import androidx.lifecycle.*
-import androidx.lifecycle.Transformations.map
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.viewModelScope
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
-import com.udacity.asteroidradar.api.AteroidObjectClass
-import com.udacity.asteroidradar.database.AsteroidDao
-import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.database.AsteroidDatabase.Companion.getInstance
-import com.udacity.asteroidradar.database.AsteroidEntity
 import com.udacity.asteroidradar.repository.AsteroidRepository
-import kotlinx.coroutines.*
-import java.text.SimpleDateFormat
-import java.util.*
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.launch
 
-class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
-    AndroidViewModel(application) {
+class AsteroidViewModel(application: Application) : AndroidViewModel(application) {
     /**
      * A [CoroutineScope] keeps track of all coroutines started by this ViewModel.
      *
@@ -28,90 +25,33 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
      * the main thread on Android. This is a sensible default because most coroutines started by view model
      */
 
-    // Job is holder that catch coroutines
-    // create  job and override on canclled() for canclleing coroutines when this view model is destroyed
-    private var viewModelJob = Job()
 
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
-    }
-
-    // define a scope for coroutines to run in it
-    // Dispatchers.Main (work all over the project and used for update live data)
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
-
-    private val database = getInstance(application)
-    private  val repo = AsteroidRepository(database)
-
-    init {
-        getPictureOfDay()
-        uiScope.launch {
-            repo.refreshedAsteroid()
-        }
-    }
-    val list = repo.asteroids
     // navigation from online
     private var _navigateToSelectedProperty = MutableLiveData<Asteroid>()
 
-    val navigateToSelectedProperty: LiveData<Asteroid>
-        get() = _navigateToSelectedProperty
+    private val database = getInstance(application)
 
-    fun displayPropertyDetails(asteroid: Asteroid) {
-        _navigateToSelectedProperty.value = asteroid
-    }
-    fun displayPropertyDetailsComplete() {
-        _navigateToSelectedProperty.value = null
-    }
-    // navigation from db
-    private val _navigateToDetails = MutableLiveData<AsteroidEntity>()
-
-    val navigateToDetails: LiveData<AsteroidEntity>
-        get() = _navigateToDetails
-
-    fun doneNavigating() {
-        _navigateToDetails.value = null
-    }
-
-
-
-    // initial value
-    private var Asteroids = dao.getAsteroid()
-
-
-    // initial value
-    private var oneAsteroid = dao.getAsteroidWithId(0L)
-
-
-    // list that will passed to ui controller
-    val dataList: LiveData<List<AsteroidEntity>>
-        get() = Asteroids
-
-    // list that will passed to ui controller
-    val asteroid: LiveData<AsteroidEntity>
-        get() = oneAsteroid
-
-
-    val sdf = SimpleDateFormat("yyyy-MM-dd")
-    val startDate = sdf.format(Date())
-
-//    init {
-//
-//        getPictureOfDay2()
-//        uiScope.launch {
-//            Asteroids = getAsteroidFromDatabase()
-//            oneAsteroid = getOneAsteroidFromDatabase(0L)
-//            refreshAsteroidsgetFromAPI()
-//        }
-//    }
-
+    private val repo = AsteroidRepository(database)
 
     private val _image = MutableLiveData<PictureOfDay>()
     val image: LiveData<PictureOfDay>
         get() = _image
 
+
+    val navigateToSelectedProperty: LiveData<Asteroid>
+        get() = _navigateToSelectedProperty
+
+    val list = repo.asteroids
+
+
+    init {
+        getPictureOfDay()
+        getListOfDay()
+    }
+
+
     private fun getPictureOfDay() {
-        uiScope.launch {
+        viewModelScope.launch {
             try {
                 _image.value = repo.getPictureOfDay()
             } catch (e: Exception) {
@@ -120,118 +60,19 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
         }
     }
 
-
-
-    private val _localList = MutableLiveData<List<AsteroidEntity>>()
-    val localList: MutableLiveData<List<AsteroidEntity>>
-        get() = _localList
-
-    private val _refreshedList = MutableLiveData<List<Asteroid>>()
-    val refreshedList: MutableLiveData<List<Asteroid>>
-        get() = _refreshedList
-
-
-    private fun refreshAsteroidsgetFromAPI() {
+    private fun getListOfDay() {
         viewModelScope.launch {
-            val asteroids = AteroidObjectClass.getAsteroids()
-            _refreshedList .value = asteroids
-            _localList.value = asteroids.asAsteroidToEntities()
-           // dao.addAsteroid(asteroids) // should handle it to add in db
-        }
-
-    }
-
-
-
-
-
-    // will called from ui
-    fun getAllAsteroid() {
-        uiScope.launch {
-            val asteroid = AsteroidEntity(0L,"","",0.0,0.0,0.0,0.0,false)
-            Asteroids = getAsteroidFromDatabase()
-        }
-    }
-
-    // will called from ui
-    fun getOneAsteroid(id: Long) {
-        uiScope.launch {
-            oneAsteroid = getOneAsteroidFromDatabase(id)
-            _navigateToDetails.value = oneAsteroid.value
-
-
-
+            repo.refreshedAsteroid()
         }
     }
 
 
-
-
-    private suspend fun getOneAsteroidFromDatabase(id: Long): LiveData<AsteroidEntity> {
-        // to switch from main thread to IO thread use withContext
-        // Dispatchers.IO used for get data from room database
-        return withContext(Dispatchers.IO) {
-            //this code work only in Dispatchers.IO thread and when finish coroutines will return to main thread
-            var Asteroid = dao.getAsteroidWithId(id)
-            Asteroid
-        }
+    fun displayPropertyDetails(asteroid: Asteroid) {
+        _navigateToSelectedProperty.value = asteroid
     }
 
-
-    // will called from ui
-    fun onAddNewAsteroid() {
-        uiScope.launch {
-            val asteroid = AsteroidEntity(0L,"","",0.0,0.0,0.0,0.0,false)
-            insert(asteroid)
-            _navigateToDetails.value = asteroid
-            Asteroids = getAsteroidFromDatabase()
-        }
+    fun displayPropertyDetailsComplete() {
+        _navigateToSelectedProperty.value = null
     }
 
-    private suspend fun getAsteroidFromDatabase(): LiveData<List<AsteroidEntity>> {
-        // to switch from main thread to IO thread use withContext
-        // Dispatchers.IO used for get data from room database
-        return withContext(Dispatchers.IO) {
-            //this code work only in Dispatchers.IO thread and when finish coroutines will return to main thread
-            var Asteroid = dao.getAsteroid()
-            Asteroid
-        }
-    }
-
-
-    private suspend fun insert(asteroid: AsteroidEntity) {
-        withContext(Dispatchers.IO) {
-           //  dao.addAsteroid(asteroid)
-        }
-    }
-
-    fun LiveData<AsteroidEntity>.asEntitiesToAsteroid() : LiveData<Asteroid> {
-        return map {
-            Asteroid(
-                id = it.id,
-                codename = it.codename,
-                closeApproachDate = it.closeApproachDate,
-                absoluteMagnitude = it.absoluteMagnitude,
-                estimatedDiameter = it.estimatedDiameter,
-                relativeVelocity = it.relativeVelocity,
-                distanceFromEarth = it.distanceFromEarth,
-                isPotentiallyHazardous = it.isPotentiallyHazardous
-            )
-        }
-    }
-
-    fun List<Asteroid>.asAsteroidToEntities() : List<AsteroidEntity> {
-        return map {
-            AsteroidEntity(
-                id = it.id,
-                codename = it.codename,
-                closeApproachDate = it.closeApproachDate,
-                absoluteMagnitude = it.absoluteMagnitude,
-                estimatedDiameter = it.estimatedDiameter,
-                relativeVelocity = it.relativeVelocity,
-                distanceFromEarth = it.distanceFromEarth,
-                isPotentiallyHazardous = it.isPotentiallyHazardous
-            )
-        }
-    }
 }

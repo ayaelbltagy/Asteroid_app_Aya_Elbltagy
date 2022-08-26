@@ -17,12 +17,6 @@ interface AsteroidDao {
      */    @Query("SELECT * FROM asteroid_table")
     fun getAsteroid () : LiveData<List<AsteroidEntity>>
 
-    /**
-     * Selects and returns the Asteroid with given nightId.
-     */
-    @Query("SELECT * from asteroid_table WHERE id = :key")
-    fun getAsteroidWithId(key: Long): LiveData<AsteroidEntity>
-
 
 
  }

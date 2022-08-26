@@ -14,7 +14,7 @@ object AteroidObjectClass {
 
     const val API_KEY = "wat0gv7aur4kc7FwltauMiuEFl8K9hlOHdQ0JXKL"
     private const val BASE_URL = "https://api.nasa.gov/"
-enum class ApiFilter(var filterType : String)
+
     // moshi is a lib used to convert json
     private val moshi = Moshi.Builder()
         .add(KotlinJsonAdapterFactory())
