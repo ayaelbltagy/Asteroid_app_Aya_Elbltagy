@@ -8,7 +8,10 @@ import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.api.AteroidObjectClass
 import com.udacity.asteroidradar.database.AsteroidDao
+import com.udacity.asteroidradar.database.AsteroidDatabase
+import com.udacity.asteroidradar.database.AsteroidDatabase.Companion.getInstance
 import com.udacity.asteroidradar.database.AsteroidEntity
+import com.udacity.asteroidradar.repository.AsteroidRepository
 import kotlinx.coroutines.*
 import java.text.SimpleDateFormat
 import java.util.*
@@ -34,6 +37,20 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
         viewModelJob.cancel()
     }
 
+    // define a scope for coroutines to run in it
+    // Dispatchers.Main (work all over the project and used for update live data)
+    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
+    private val database = getInstance(application)
+    private  val repo = AsteroidRepository(database)
+
+    init {
+        getPictureOfDay()
+        uiScope.launch {
+            repo.refreshedAsteroid()
+        }
+    }
+    val list = repo.asteroids
     // navigation from online
     private var _navigateToSelectedProperty = MutableLiveData<Asteroid>()
 
@@ -56,9 +73,7 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
         _navigateToDetails.value = null
     }
 
-    // define a scope for coroutines to run in it
-    // Dispatchers.Main (work all over the project and used for update live data)
-    private val uiScope = CoroutineScope(Dispatchers.Main + viewModelJob)
+
 
     // initial value
     private var Asteroids = dao.getAsteroid()
@@ -80,38 +95,32 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
     val sdf = SimpleDateFormat("yyyy-MM-dd")
     val startDate = sdf.format(Date())
 
-    init {
-
-        getPictureOfDay2()
-        uiScope.launch {
-            Asteroids = getAsteroidFromDatabase()
-            oneAsteroid = getOneAsteroidFromDatabase(0L)
-            refreshAsteroidsgetFromAPI()
-        }
-    }
+//    init {
+//
+//        getPictureOfDay2()
+//        uiScope.launch {
+//            Asteroids = getAsteroidFromDatabase()
+//            oneAsteroid = getOneAsteroidFromDatabase(0L)
+//            refreshAsteroidsgetFromAPI()
+//        }
+//    }
 
 
     private val _image = MutableLiveData<PictureOfDay>()
     val image: LiveData<PictureOfDay>
         get() = _image
 
-    private fun getPictureOfDay2() {
+    private fun getPictureOfDay() {
         uiScope.launch {
             try {
-                _image.value = getPictureOfDay()
+                _image.value = repo.getPictureOfDay()
             } catch (e: Exception) {
                 e.printStackTrace()
             }
         }
     }
 
-    suspend fun getPictureOfDay(): PictureOfDay {
-        lateinit var pictureOfDay: PictureOfDay
-        withContext(Dispatchers.IO) {
-            pictureOfDay = AteroidObjectClass.getPictureOfDay()
-        }
-        return pictureOfDay
-    }
+
 
     private val _localList = MutableLiveData<List<AsteroidEntity>>()
     val localList: MutableLiveData<List<AsteroidEntity>>
@@ -192,7 +201,7 @@ class AsteroidViewModel(application: Application, val dao: AsteroidDao) :
 
     private suspend fun insert(asteroid: AsteroidEntity) {
         withContext(Dispatchers.IO) {
-            dao.addAsteroid(asteroid)
+           //  dao.addAsteroid(asteroid)
         }
     }
 

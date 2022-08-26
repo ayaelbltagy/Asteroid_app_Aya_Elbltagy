@@ -13,6 +13,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/../Android_NanoDegree_AsteroidRadar/app/src/main/java/com/udacity/asteroidradar/app/RefreshAsteroidsWorker.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/../Android_NanoDegree_AsteroidRadar/app/src/main/java/com/udacity/asteroidradar/database/IAsteroidDao.kt">
           <value>
             <set />
@@ -104,6 +109,11 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/database/AsteroidEntity.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/database/PictureEntity.kt">
           <value>
             <set />
           </value>
@@ -209,6 +219,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/repository/AsteroidRepository.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/work/MyApplication.kt">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/work/RefreshDataWorker.kt">
           <value>
             <set />
           </value>

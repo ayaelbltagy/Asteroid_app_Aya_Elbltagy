@@ -9,7 +9,7 @@ import androidx.room.Query
 interface AsteroidDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addAsteroid(asteroid : AsteroidEntity)
+    fun addAsteroid(asteroid : List<AsteroidEntity>)
 
     /**
      * Selects and returns all rows in the table,
