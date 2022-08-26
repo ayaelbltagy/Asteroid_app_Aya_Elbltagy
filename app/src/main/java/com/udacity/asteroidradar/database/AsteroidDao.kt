@@ -11,12 +11,7 @@ interface AsteroidDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addAsteroid(asteroid : List<AsteroidEntity>)
 
-    /**
-     * Selects and returns all rows in the table,
-     *
-     */    @Query("SELECT * FROM asteroid_table")
+    @Query("SELECT * FROM asteroid_table ORDER by closeApproachDate")
     fun getAsteroid () : LiveData<List<AsteroidEntity>>
-
-
 
  }
