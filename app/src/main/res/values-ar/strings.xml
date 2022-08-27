@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="next_week_asteroids">View week asteroids</string>
-    <string name="today_asteroids">View today asteroids</string>
-    <string name="saved_asteroids">View saved asteroids</string>
+    <string name="next_week_asteroids">الاسبوع</string>
+    <string name="today_asteroids">اليوم</string>
+    <string name="saved_asteroids">المحفوظه</string>
     <string name="close_approach_data_title">Close approach date</string>
     <string name="absolute_magnitude_title">Absolute magnitude</string>
     <string name="estimated_diameter_title">Estimated diameter</string>
