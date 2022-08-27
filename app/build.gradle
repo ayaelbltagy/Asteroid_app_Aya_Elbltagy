@@ -86,4 +86,16 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation "androidx.test.espresso:espresso-core:3.3.0"
     androidTestImplementation "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
+
+    // Coroutines for retrofit
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.1.16"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.1"
+    implementation "com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2"
+
+    // glide
+    implementation 'com.github.bumptech.glide:glide:4.12.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.12.0'
+
+    // work manager
+    implementation "android.arch.work:work-runtime-ktx:1.0.1"
 }

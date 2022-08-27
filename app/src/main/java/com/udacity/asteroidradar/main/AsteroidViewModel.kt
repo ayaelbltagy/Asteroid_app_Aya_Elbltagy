@@ -1,69 +1,77 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
- import com.udacity.asteroidradar.database.AsteroidDao
-import com.udacity.asteroidradar.database.AsteroidEntity
-import kotlinx.coroutines.*
+import androidx.lifecycle.viewModelScope
+import com.udacity.asteroidradar.Asteroid
+import com.udacity.asteroidradar.PictureOfDay
+import com.udacity.asteroidradar.database.AsteroidDatabase.Companion.getInstance
+import com.udacity.asteroidradar.repository.AsteroidRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
-class AsteroidViewModel(application : Application, val dao :AsteroidDao) : AndroidViewModel(application) {
+class AsteroidViewModel(application: Application) : AndroidViewModel(application) {
+    /**
+     * A [CoroutineScope] keeps track of all coroutines started by this ViewModel.
+     *
+     * Because we pass it [viewModelJob], any coroutine started in this uiScope can be cancelled
+     * by calling `viewModelJob.cancel()`
+     *
+     * By default, all coroutines started in uiScope will launch in [Dispatchers.Main] which is
+     * the main thread on Android. This is a sensible default because most coroutines started by view model
+     */
 
-    // create view model job and override on canclled() for canclleing co-rotuines when this view model is destroyed
-    private var viewModelJob = Job()
-    override fun onCleared() {
-        super.onCleared()
-        viewModelJob.cancel()
-    }
 
-    // define a scope for co-rotuines to run in it
-    private val uiScope = CoroutineScope(Dispatchers.Main+viewModelJob)
+    // navigation from online
+    private var _navigateToSelectedProperty = MutableLiveData<Asteroid>()
 
-    // create live data var and use co-rotinues to initilize it from database
-    private lateinit var liveList : LiveData<List<AsteroidEntity>>
+    private val database = getInstance(application)
 
-     private  var Asteroids = dao.getAsteroid()
+    private val repo = AsteroidRepository(database)
 
-    // list that will passed to ui controller
-    val dataList: LiveData<List<AsteroidEntity>>
-        get() = Asteroids
+    private val _image = MutableLiveData<PictureOfDay>()
+    val image: LiveData<PictureOfDay>
+        get() = _image
 
-    // to refresh data after navigation we should tell view model that navigation is done
-    private val _navigationDone = MutableLiveData<AsteroidEntity>()
-    val navigationDone : LiveData<AsteroidEntity>
-    get() = _navigationDone
 
-    fun doneNavigation(){
-        _navigationDone.value = null
-    }
+    val navigateToSelectedProperty: LiveData<Asteroid>
+        get() = _navigateToSelectedProperty
+
+    val list = repo.asteroids
+
 
     init {
-
-        uiScope.launch { liveList = getAsteroidFromDatabase() }
+        getPictureOfDay()
+        getListOfDay()
     }
 
-    private suspend fun getAsteroidFromDatabase(): LiveData<List<AsteroidEntity>>{
-        return withContext(Dispatchers.IO){
-            var Asteroids = dao.getAsteroid()
-            Asteroids
+
+    private fun getPictureOfDay() {
+        viewModelScope.launch {
+            try {
+                _image.value = repo.getPictureOfDay()
+            } catch (e: Exception) {
+                e.printStackTrace()
+            }
+        }
+    }
+
+    private fun getListOfDay() {
+        viewModelScope.launch {
+            repo.refreshedAsteroid()
         }
     }
 
 
-   // add function that will insert data to database
-     fun onAddNewAsteroid (){
-        uiScope.launch {
-            val asteroid = AsteroidEntity(200,2.0,30.0)
-            insert(asteroid)
-            liveList = getAsteroidFromDatabase()
-        }
+    fun displayPropertyDetails(asteroid: Asteroid) {
+        _navigateToSelectedProperty.value = asteroid
     }
-    private suspend fun insert (asteroid : AsteroidEntity){
-       withContext(Dispatchers.IO){
-            dao.addAsteroid(asteroid)
-        }
+
+    fun displayPropertyDetailsComplete() {
+        _navigateToSelectedProperty.value = null
     }
+
 }

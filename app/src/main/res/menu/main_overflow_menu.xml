@@ -3,11 +3,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/show_all_menu"
-        android:title="@string/next_week_asteroids" />
+        android:title="@string/next_week_asteroids"
+        android:visible="false" />
     <item
         android:id="@+id/show_rent_menu"
-        android:title="@string/today_asteroids" />
+        android:title="@string/today_asteroids"
+        android:visible="false" />
     <item
         android:id="@+id/show_buy_menu"
-        android:title="@string/saved_asteroids" />
+        android:title="@string/saved_asteroids"
+        android:visible="false" />
+    <item
+        android:id="@+id/lang"
+        android:title="@string/change_language" />
 </menu>
