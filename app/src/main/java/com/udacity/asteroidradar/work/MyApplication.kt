@@ -13,6 +13,7 @@ class MyApplication : Application() {
     private val applicationScope = CoroutineScope(Dispatchers.Default)
     private val debug = false
 
+
     override fun onCreate() {
         super.onCreate()
 
@@ -42,8 +43,8 @@ class MyApplication : Application() {
                 }.build()
         }
 
-        val timeUnit = if(debug) TimeUnit.SECONDS else TimeUnit.DAYS
-        val interval:Long = if(debug) 10 else 1
+        val timeUnit = if (debug) TimeUnit.SECONDS else TimeUnit.DAYS
+        val interval: Long = if (debug) 10 else 1
 
         val repeatingRequest = PeriodicWorkRequestBuilder<RefreshDataWorker>(interval, timeUnit)
             .setConstraints(constraints)
@@ -52,6 +53,9 @@ class MyApplication : Application() {
         WorkManager.getInstance().enqueueUniquePeriodicWork(
             RefreshDataWorker.WORK_NAME,
             ExistingPeriodicWorkPolicy.REPLACE,
-            repeatingRequest)
+            repeatingRequest
+        )
     }
+
+
 }
