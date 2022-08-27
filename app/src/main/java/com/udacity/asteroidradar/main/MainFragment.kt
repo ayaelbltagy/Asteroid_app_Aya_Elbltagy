@@ -1,10 +1,7 @@
 package com.udacity.asteroidradar.main
 
-import android.content.Context
-import android.os.Build
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -13,7 +10,7 @@ import com.udacity.asteroidradar.R
 import com.udacity.asteroidradar.databinding.FragmentMainBinding
 import com.udacity.asteroidradar.factory.AsteroidViewModelFactory
 import com.udacity.asteroidradar.helper.PreferenceHelper
-import java.util.*
+import com.udacity.asteroidradar.helper.Utility
 
 class MainFragment : Fragment() {
 
@@ -36,14 +33,17 @@ class MainFragment : Fragment() {
         val viewModel =
             ViewModelProviders.of(this, viewModelFactory).get(AsteroidViewModel::class.java)
         binding.viewModel = viewModel
-
-
+        // setup your adapter
         var adapter = MainAsteroidAdapter(MainAsteroidClickListener {
             viewModel.displayPropertyDetails(it)
         })
+        // show dialog till api get response
+        binding.statusLoadingWheel.visibility = View.VISIBLE
         binding.asteroidRecycler.adapter = adapter
         viewModel.list.observe(viewLifecycleOwner, Observer {
             it?.let {
+                // hide dialog as list is ready
+                binding.statusLoadingWheel.visibility = View.GONE
                 adapter.submitList(it)
             }
         })
@@ -68,35 +68,18 @@ class MainFragment : Fragment() {
         val id = item!!.itemId
         if (id == R.id.lang) {
             if (helper.getLocal().equals("ar")) {
-                setLocale(requireActivity().baseContext, "en")
+                Utility.setLocale(requireActivity().baseContext, "en")
+                requireActivity().recreate()
             } else if (helper.getLocal().equals("en")) {
-                setLocale(requireActivity().baseContext, "ar")
+                Utility.setLocale(requireActivity().baseContext, "ar")
+                requireActivity().recreate()
             } else {
-                setLocale(requireActivity().baseContext, "en")
+                Utility.setLocale(requireActivity().baseContext, "en")
+                requireActivity().recreate()
             }
-
         }
 
         return super.onOptionsItemSelected(item)
-    }
-
-    fun setLocale(context: Context, languageCode: String) {
-        helper.setLocal(languageCode)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            return updateResoureces(context, languageCode)
-        }
-        return updateResoureces(context, languageCode)
-
-    }
-
-    fun updateResoureces(context: Context, languageCode: String) {
-        var local =  Locale(languageCode.toLowerCase())
-        Locale.setDefault(local)
-        val resources = context.resources
-        val configuration = resources.configuration
-        configuration.locale = local
-        resources.updateConfiguration(configuration, resources.displayMetrics)
-        requireActivity().recreate()
     }
 
 

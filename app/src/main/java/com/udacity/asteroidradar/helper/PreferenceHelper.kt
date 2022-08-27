@@ -2,15 +2,12 @@ package com.udacity.asteroidradar.helper
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
-import java.lang.NullPointerException
-import java.util.*
 
-public class PreferenceHelper {
-    private lateinit var app_prefs : SharedPreferences
+class PreferenceHelper {
+    private lateinit var app_prefs: SharedPreferences
     private val local = "Local"
 
-    constructor(context: Context?){
+    constructor(context: Context?) {
         try {
             if (context != null) {
                 app_prefs = context.getSharedPreferences("shoeApp", Context.MODE_PRIVATE)
