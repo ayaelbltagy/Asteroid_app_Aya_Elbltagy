@@ -61,7 +61,7 @@ class AsteroidViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun onViewWeekAsteroidsClicked() {
-         removeSource()
+        removeSource()
         asteroidList.addSource(list) {
             asteroidList.value = it
         }

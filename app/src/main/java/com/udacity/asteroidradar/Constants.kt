@@ -13,4 +13,16 @@ object Constants {
         return formatter.format(date)
     }
 
+    fun getDate7Days(): String {
+        val formatter = SimpleDateFormat("yyyy-MM-dd")
+        val date = Date()
+        val calendar = Calendar.getInstance()
+        calendar.time = date
+        calendar.add(Calendar.DAY_OF_WEEK, 7)
+        val newDate = calendar.time
+        val y: String = formatter.format(newDate)
+        return y
+    }
+
+
 }
