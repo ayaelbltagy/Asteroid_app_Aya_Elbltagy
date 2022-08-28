@@ -5,6 +5,7 @@ import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
 import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.database.AsteroidDatabase.Companion.getInstance
+import com.udacity.asteroidradar.database.PictureOfDayEntity
 import com.udacity.asteroidradar.repository.AsteroidRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -31,7 +32,7 @@ class AsteroidViewModel(application: Application) : AndroidViewModel(application
 
     private val _image = MutableLiveData<PictureOfDay>()
     val image: LiveData<PictureOfDay>
-        get() = _image
+        get() = repo.pictureOfDay
 
 
     val navigateToSelectedProperty: LiveData<Asteroid>
@@ -88,7 +89,8 @@ class AsteroidViewModel(application: Application) : AndroidViewModel(application
     private fun getPictureOfDay() {
         viewModelScope.launch {
             try {
-                _image.value = repo.getPictureOfDay()
+                repo.getPictureOfDay()
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }
