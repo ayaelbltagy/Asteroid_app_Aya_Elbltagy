@@ -3,9 +3,7 @@ package com.udacity.asteroidradar.main
 import android.app.Application
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
-import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.database.AsteroidDatabase.Companion.getInstance
-import com.udacity.asteroidradar.database.PictureOfDayEntity
 import com.udacity.asteroidradar.repository.AsteroidRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -30,10 +28,8 @@ class AsteroidViewModel(application: Application) : AndroidViewModel(application
 
     private val repo = AsteroidRepository(database)
 
-    private val _image = MutableLiveData<PictureOfDay>()
-    val image: LiveData<PictureOfDay>
-        get() = repo.pictureOfDay
 
+    val repoImage = repo.pictureOfDayEntity
 
     val navigateToSelectedProperty: LiveData<Asteroid>
         get() = _navigateToSelectedProperty
@@ -48,7 +44,7 @@ class AsteroidViewModel(application: Application) : AndroidViewModel(application
         getPictureOfDay()
         getListOfDay()
         viewModelScope.launch {
-              asteroidList.addSource(list) {
+            asteroidList.addSource(list) {
                 asteroidList.value = it
             }
 
@@ -65,7 +61,7 @@ class AsteroidViewModel(application: Application) : AndroidViewModel(application
     }
 
     fun onViewWeekAsteroidsClicked() {
-        removeSource()
+         removeSource()
         asteroidList.addSource(list) {
             asteroidList.value = it
         }
@@ -89,7 +85,7 @@ class AsteroidViewModel(application: Application) : AndroidViewModel(application
     private fun getPictureOfDay() {
         viewModelScope.launch {
             try {
-                repo.getPictureOfDay()
+                repo.getPic()
 
             } catch (e: Exception) {
                 e.printStackTrace()

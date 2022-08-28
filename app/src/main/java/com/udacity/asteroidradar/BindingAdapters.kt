@@ -66,4 +66,17 @@ fun bindImagePictureOfDay(imageView: ImageView, data: PictureOfDay?) {
 
         }
     }
+
+
+}
+
+@BindingAdapter("pictureOfDay2")
+fun bindImagePictureOfDay2(imageView: ImageView, data: String?) {
+
+
+    Picasso.with(imageView.context)
+        .load(data)
+        .into(imageView)
+
+
 }

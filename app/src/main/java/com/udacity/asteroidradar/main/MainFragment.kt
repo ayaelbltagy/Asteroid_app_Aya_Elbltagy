@@ -2,22 +2,21 @@ package com.udacity.asteroidradar.main
 
 import android.os.Bundle
 import android.view.*
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.findNavController
 import com.udacity.asteroidradar.R
-import com.udacity.asteroidradar.databinding.FragmentMainBinding
+import com.udacity.asteroidradar.databinding.MainFragmentBinding
 import com.udacity.asteroidradar.factory.AsteroidViewModelFactory
 import com.udacity.asteroidradar.helper.PreferenceHelper
 import com.udacity.asteroidradar.helper.Utility
 
 class MainFragment : Fragment() {
 
-    private lateinit var binding: FragmentMainBinding
     private lateinit var helper: PreferenceHelper
     private lateinit var viewModel: AsteroidViewModel
+    private lateinit var binding: MainFragmentBinding
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -25,7 +24,7 @@ class MainFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = FragmentMainBinding.inflate(inflater, container, false)
+        binding = MainFragmentBinding.inflate(inflater, container, false)
         binding.lifecycleOwner = this
         helper = PreferenceHelper(activity)
         // option menu
