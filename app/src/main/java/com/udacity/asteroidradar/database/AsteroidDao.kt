@@ -14,4 +14,9 @@ interface AsteroidDao {
     @Query("SELECT * FROM asteroid_table ORDER by closeApproachDate")
     fun getAsteroid () : LiveData<List<AsteroidEntity>>
 
- }
+
+    @Query("SELECT * FROM asteroid_table WHERE closeApproachDate=:date ORDER BY closeApproachDate ASC ")
+    fun getTodayAsteroid(date: String): LiveData<List<AsteroidEntity>>
+
+
+}

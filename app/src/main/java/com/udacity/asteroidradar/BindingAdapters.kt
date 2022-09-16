@@ -19,8 +19,14 @@ fun bindAsteroidStatusImage(imageView: ImageView, isHazardous: Boolean) {
 @BindingAdapter("asteroidStatusImage")
 fun bindDetailsStatusImage(imageView: ImageView, isHazardous: Boolean) {
     if (isHazardous) {
+        imageView.contentDescription = imageView.context.getString(
+            R.string.potentially_hazardous_asteroid_image
+        )
         imageView.setImageResource(R.drawable.asteroid_hazardous)
     } else {
+        imageView.contentDescription = imageView.context.getString(
+            R.string.not_hazardous_asteroid_image
+        )
         imageView.setImageResource(R.drawable.asteroid_safe)
     }
 }
@@ -66,4 +72,17 @@ fun bindImagePictureOfDay(imageView: ImageView, data: PictureOfDay?) {
 
         }
     }
+
+
+}
+
+@BindingAdapter("pictureOfDay2")
+fun bindImagePictureOfDay2(imageView: ImageView, data: String?) {
+
+
+    Picasso.with(imageView.context)
+        .load(data)
+        .into(imageView)
+
+
 }

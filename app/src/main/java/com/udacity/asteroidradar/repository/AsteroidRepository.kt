@@ -1,19 +1,27 @@
 package com.udacity.asteroidradar.repository
 
+import android.util.Log
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.Transformations.map
+import com.squareup.moshi.Moshi
 import com.udacity.asteroidradar.Asteroid
-import com.udacity.asteroidradar.PictureOfDay
+import com.udacity.asteroidradar.Constants
 import com.udacity.asteroidradar.api.AteroidObjectClass
 import com.udacity.asteroidradar.database.AsteroidDatabase
 import com.udacity.asteroidradar.database.AsteroidEntity
+import com.udacity.asteroidradar.database.PictureOfDayEntity
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class AsteroidRepository(private val database: AsteroidDatabase) {
 
     val asteroids: LiveData<List<Asteroid>> =
-        Transformations.map(database.getAsteroidDao().getAsteroid()) {
+        map(database.getAsteroidDao().getAsteroid()) {
+            it.asDomainModel()
+        }
+
+    val todayAsteroidList: LiveData<List<Asteroid>> =
+        map(database.getAsteroidDao().getTodayAsteroid(Constants.getCurrentDate())) {
             it.asDomainModel()
         }
 
@@ -25,14 +33,27 @@ class AsteroidRepository(private val database: AsteroidDatabase) {
         }
     }
 
-    suspend fun getPictureOfDay(): PictureOfDay {
-        lateinit var pictureOfDay: PictureOfDay
-        withContext(Dispatchers.IO) {
-            pictureOfDay = AteroidObjectClass.getPictureOfDay()
+
+    val pictureOfDayEntity: LiveData<PictureOfDayEntity>
+        get() = database.getAsteroidDaoPic().get()
+
+    suspend fun getPic() {
+        var responseStr = AteroidObjectClass.ServerApi.retrofitService.getPictureOfDay(
+            AteroidObjectClass.API_KEY
+        )
+        val pic = Moshi.Builder()
+            .build()
+            .adapter(PictureOfDayEntity::class.java)
+            .fromJson(responseStr)
+        if (pic != null) {
+            Log.i("dbtest", pic.url)
+            database.getAsteroidDaoPic().insert(pic)
+        } else {
+            Log.i("dbtest", "null")
         }
-        return pictureOfDay
     }
 }
+
 
 fun List<Asteroid>.asAsteroidToEntities(): List<AsteroidEntity> {
     return map {
@@ -63,3 +84,4 @@ fun List<AsteroidEntity>.asDomainModel(): List<Asteroid> {
         )
     }
 }
+

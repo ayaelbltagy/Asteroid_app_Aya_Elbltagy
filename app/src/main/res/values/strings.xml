@@ -21,4 +21,8 @@
     <string name="nasa_picture_of_day_content_description_format">NASA\'s picture of day: %s</string>
     <string name="image_contentDescription">image contentDescription</string>
     <string name="change_language">Change language</string>
+    <string name="not_hazardous">Not Hazardous</string>
+    <string name="help">Help</string>
+    <string name="image_cont">Image content</string>
+
 </resources>

@@ -7,11 +7,13 @@ import androidx.room.RoomDatabase
 
 private const val DATA_BASE_NAME = "AsteroidDB"
 
-@Database(entities = [AsteroidEntity::class],version =1,exportSchema = false)
+@Database(entities = [AsteroidEntity::class, PictureOfDayEntity::class],version =2,exportSchema = false)
 abstract class AsteroidDatabase :RoomDatabase() {
 
     // to access database you should get from DAO
     abstract fun getAsteroidDao(): AsteroidDao
+    abstract fun getAsteroidDaoPic(): PictureDao
+
 
     // to prevent more connection should use one instance from database so make single tone design pattern
     companion object {

@@ -8,22 +8,12 @@
             <set />
           </value>
         </entry>
-        <entry key="/fragment.java">
+        <entry key="$PROJECT_DIR$/../AsteroidRadar/app/src/main/java/com/udacity/asteroidradar/repo/AsteroidRepository.kt">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/../Android_NanoDegree_AsteroidRadar/app/src/main/java/com/udacity/asteroidradar/app/RefreshAsteroidsWorker.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../Android_NanoDegree_AsteroidRadar/app/src/main/java/com/udacity/asteroidradar/database/IAsteroidDao.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../Android_NanoDegree_AsteroidRadar/app/src/main/java/com/udacity/asteroidradar/main/MainViewModel.kt">
+        <entry key="$PROJECT_DIR$/../BusinessBoomers/cpanel-android/app/src/main/res/layout/fragment_products_list_view.xml">
           <value>
             <set />
           </value>
@@ -38,32 +28,7 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/build/generated/source/kapt/debug/com/udacity/asteroidradar/database/AsteroidDao_Impl.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/build/generated/source/kapt/debug/com/udacity/asteroidradar/databinding/FragmentDetailBindingImpl.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/androidTest/java/com/udacity/asteroidradar/AsteroidDatabaseTest.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/AndroidManifest.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/Asteroid.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/AsteroidesListModel.kt">
+        <entry key="$PROJECT_DIR$/app/build/tmp/kapt3/stubs/debug/com/udacity/asteroidradar/database/PictureDao.java">
           <value>
             <set />
           </value>
@@ -78,7 +43,7 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/MainActivity.kt">
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/PictureOfDay.kt">
           <value>
             <set />
           </value>
@@ -88,32 +53,7 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/api/AsteroidApiObjectClass.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/api/AsteroidApiService.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/api/AteroidObjectClass.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/api/NetworkUtils.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/api/ServerApiService.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/database/Asteroid.kt">
           <value>
             <set />
           </value>
@@ -128,37 +68,12 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/database/AsteroidEntity.kt">
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/database/PictureDao.kt">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/database/PictureEntity.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/details/DetailFragment.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/factory/AsteroidViewModelFactory.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/helper/PreferenceHelper.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/helper/Utility.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/main/AsteroidAdapter.kt">
+        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/database/PictureOfDayEntity.kt">
           <value>
             <set />
           </value>
@@ -168,82 +83,7 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/main/MainAsteroidAdapter.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/main/MainFragment.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/main/MainViewModel.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/models/AsteroidListModel.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/models/FeetX.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/models/KilometersX.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/models/Links.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/models/MarsProperty.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/models/MetersX.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/models/MilesX.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/models/MissDistanceX.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/models/ModelResponse.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/models/RelativeVelocityX.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/models/ResponseModel.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/models/moResponse.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/models/moResponse.kt">
           <value>
             <set />
           </value>
@@ -253,27 +93,12 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/work/MyApplication.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/java/com/udacity/asteroidradar/work/RefreshDataWorker.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout-ar/activity_main.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/layout-ar/fragment_detail.xml">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout-ar/fragment_main.xml">
+        <entry key="$PROJECT_DIR$/app/src/main/res/layout-ar/main_fragment.xml">
           <value>
             <set />
           </value>
@@ -283,22 +108,22 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/app/src/main/res/layout/fragment_detail.xml">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/layout/fragment_main.xml">
           <value>
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/item.xml">
+        <entry key="$PROJECT_DIR$/app/src/main/res/layout/main_fragment.xml">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/layout/main_list_item.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/layout/test.xml">
           <value>
             <set />
           </value>
@@ -313,107 +138,12 @@
             <set />
           </value>
         </entry>
-        <entry key="$PROJECT_DIR$/app/src/main/res/navigation/main_nav_graph.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/values-ar/strings.xml">
           <value>
             <set />
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/app/src/main/res/values/strings.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../storeApp/app/build.gradle">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../storeApp/app/src/androidTest/java/com/store/businessboomers/store_app_interface/testActivites/AcCompareProductTest.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../storeApp/app/src/androidTest/java/com/store/businessboomers/store_app_interface/testPopupNavigation/TestNavigationFromPopupToCustomView.kt">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../storeApp/app/src/androidTest/java/com/store/businessboomers/store_app_interface/testPopupNavigation/UtilityTest.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../storeApp/app/src/main/java/com/store/businessboomers/store_app_interface/Splash_View.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../storeApp/app/src/main/java/com/store/businessboomers/store_app_interface/comman/components/genericPackage/PDFGeneric.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../storeApp/app/src/main/java/com/store/businessboomers/store_app_interface/comman/helpers/MyApplication.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../storeApp/app/src/main/java/com/store/businessboomers/store_app_interface/comman/helpers/PreferenceHelper.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../storeApp/app/src/main/java/com/store/businessboomers/store_app_interface/comman/helpers/Utility.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../storeApp/app/src/main/java/com/store/businessboomers/store_app_interface/comman/helpers/Utils.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../storeApp/app/src/main/java/com/store/businessboomers/store_app_interface/comman/services/models/StoreIdentityResponse.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../storeApp/app/src/main/java/com/store/businessboomers/store_app_interface/comman/services/webApi/ApiInterface.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../storeApp/app/src/main/java/com/store/businessboomers/store_app_interface/comman/services/webApi/StoreService.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../storeApp/app/src/main/java/com/store/businessboomers/store_app_interface/default_layout/views/ui/checkout/FrPrintInvoice.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../storeApp/app/src/main/java/com/store/businessboomers/store_app_interface/default_layout/views/ui/filter/FrProductDetailsView.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../storeApp/app/src/main/res/layouts/default/layout/fragment_product_details_fr_view.xml">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$PROJECT_DIR$/../storeApp/app/src/test/java/com/store/businessboomers/store_app_interface/ExampleUnitTest.java">
-          <value>
-            <set />
-          </value>
-        </entry>
-        <entry key="$USER_HOME$/Downloads/andfun-kotlin-mars-real-estate-Starter-Code/app/src/main/java/com/example/android/marsrealestate/overview/OverviewViewModel.kt">
           <value>
             <set />
           </value>

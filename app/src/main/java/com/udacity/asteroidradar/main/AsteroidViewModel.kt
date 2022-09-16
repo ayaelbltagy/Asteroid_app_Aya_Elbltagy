@@ -1,12 +1,8 @@
 package com.udacity.asteroidradar.main
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.*
 import com.udacity.asteroidradar.Asteroid
-import com.udacity.asteroidradar.PictureOfDay
 import com.udacity.asteroidradar.database.AsteroidDatabase.Companion.getInstance
 import com.udacity.asteroidradar.repository.AsteroidRepository
 import kotlinx.coroutines.CoroutineScope
@@ -32,27 +28,65 @@ class AsteroidViewModel(application: Application) : AndroidViewModel(application
 
     private val repo = AsteroidRepository(database)
 
-    private val _image = MutableLiveData<PictureOfDay>()
-    val image: LiveData<PictureOfDay>
-        get() = _image
 
+    val repoImage = repo.pictureOfDayEntity
 
     val navigateToSelectedProperty: LiveData<Asteroid>
         get() = _navigateToSelectedProperty
 
-    val list = repo.asteroids
+    private val list = repo.asteroids
+
+    val asteroidList: MediatorLiveData<List<Asteroid>> = MediatorLiveData()
+    private val todayAsteroidList = repo.todayAsteroidList
 
 
     init {
         getPictureOfDay()
         getListOfDay()
+        viewModelScope.launch {
+            asteroidList.addSource(list) {
+                asteroidList.value = it
+            }
+
+        }
+    }
+
+
+    fun onTodayAsteroidsClicked() {
+        removeSource()
+        asteroidList.addSource(todayAsteroidList) {
+            asteroidList.value = it
+        }
+
+    }
+
+    fun onViewWeekAsteroidsClicked() {
+        removeSource()
+        asteroidList.addSource(list) {
+            asteroidList.value = it
+        }
+
+    }
+
+    fun onSavedAsteroidsClicked() {
+        removeSource()
+        asteroidList.addSource(list) {
+            asteroidList.value = it
+        }
+
+    }
+
+    private fun removeSource() {
+        asteroidList.removeSource(todayAsteroidList)
+        asteroidList.removeSource(list)
     }
 
 
     private fun getPictureOfDay() {
         viewModelScope.launch {
             try {
-                _image.value = repo.getPictureOfDay()
+                repo.getPic()
+
             } catch (e: Exception) {
                 e.printStackTrace()
             }
